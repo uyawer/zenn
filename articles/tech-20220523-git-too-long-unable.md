@@ -23,7 +23,8 @@ Windows 11
 
 # 結果
 
-コマンドプロンプトやPowershell, git bashなどのgitコマンドが使える環境を管理者権限で起動し、以下を流します。
+`Filename too long unable`はドライブ名からファイル拡張子までのpathの文字数が260文字を超えると発生します。
+こちらを解消するには、コマンドプロンプトやPowershell、git bashなどのgitコマンドが使える環境を管理者権限で起動し、以下を流します。
 
 ```batch
 git config --system core.longpaths true
@@ -34,7 +35,7 @@ PC内の全てのgitリポジトリに反映されます。
 
 抵抗がある方は`--global`や`--local`でより範囲を小さく指定することができます。
 
-コマンド以外ではconfigファイルに`longpaths = true`を設定することでも解消できます。
+コマンド以外ではconfigファイルの`[core]`に`longpaths = true`を設定することでも解消できます。
 
 # 説明
 
