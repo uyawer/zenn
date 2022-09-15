@@ -3,7 +3,7 @@ title: "bootstrapを使ったpaginationのサンプル"
 emoji: "🔢"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [java, bootstrap5, jquery, javascript, thymeleaf]
-published: false
+published: true
 ---
 
 # 環境
@@ -108,9 +108,9 @@ function createPagerLink(page, label, isEnable) {
 }
 ```
 
-```html
+```html:list.html
 <div class="container-fluid pt-3">
-  <!-- 一覧 -->
+  <!-- list -->
   <div class="row">
     <div class="col">
       <table class="table">
@@ -140,11 +140,11 @@ paginationはjavascriptを使って組み立て、最終的に`<nav id="paginati
 
 そして見た目がこちら。
 
-1/10ページ目の見た目
+**1/10ページ目の見た目**
 ![1/10ページ目の見た目](https://storage.googleapis.com/zenn-user-upload/0db1601710e1-20220915.png)
-6/10ページ目の見た目
+**6/10ページ目の見た目**
 ![6/10ページ目の見た目](https://storage.googleapis.com/zenn-user-upload/bfb955de5372-20220915.png)
-10/10ページ目の見た目
+**10/10ページ目の見た目**
 ![10/10ページ目の見た目](https://storage.googleapis.com/zenn-user-upload/dc026862fd69-20220915.png)
 
 そう、最初と最後のページにいてもpaginationの横幅が変動しないモノが作りたかったのです。
@@ -158,7 +158,7 @@ paginationはjavascriptを使って組み立て、最終的に`<nav id="paginati
 
 ```java
 // 一覧に表示するリストを取得
-List results = service.find();
+List<Entity> results = service.find();
 // 最大のページ数を計算
 double maxPage = 1;
 if (results.size() > 0) {
@@ -185,7 +185,7 @@ if (page < 1) {
 
 ### paginationリストを組み立て
 
-ここから[bootstrap5のpagination](https://getbootstrap.jp/docs/5.0/components/pagination)に合わせてリストを作っていきます。
+ここからbootstrap5の[pagination](https://getbootstrap.jp/docs/5.0/components/pagination)に合わせてリストを作っていきます。
 
 先に矢印やページ数を詰めるための要素を作っておきます。
 
@@ -240,7 +240,7 @@ if (startPage < 1) {
   endPage += -(startPage - 1) // 1未満のページ数をendPageに加算
   startPage = 1
 } else if (maxPage < endPage) {
-  startPage -= (endPage - maxPage) // maxPage以上のページ数をstartPageに加算
+  startPage -= (endPage - maxPage) // maxPage以上のページ数をstartPageから減算
   if (startPage < 1) {
     startPage = 1
   }
@@ -264,7 +264,7 @@ for (let i = startPage; i <= endPage && i <= maxPage; i++) {
 `startPage`が1未満となった場合は`endPage`に欠けてしまったページ数を加算したいため、`startPage - 1`で0からのマイナス分として計算しておき、計算結果に`-`を付けておくことで負数を正数に反転することができるので、この値を`endPage`に加算していきます。
 
 `endPage`がmaxPage以上となった場合は`startPage`から欠けてしまったページ数を減算したいため、こちらも同じ要領で`endPage - maxPage`で溢れた分のページを計算し、`startPage`を減算していきます。
-この時に、例えば`現在のページから表示する前後のページ数`に`2`が設定されているとして、`maxPage`が`3`、`現在表示しているページ`が`3`だった場合、`startPage`には`5(endPage) - 3(maxPage)`で`2`が算出され、`1`だった`startPage`から引かれて負数となってしまうため、対策として1未満の場合は`1`を設定するようにしています。
+この時に、例えば`現在のページから表示する前後のページ数`に`2`が設定されているとして、`maxPage`が`3`、`現在表示しているページ`が`3`だった場合、`startPage`には`5(endPage) - 3(maxPage)`で`2`が算出され、`1`だった`startPage`から引かれて1未満となってしまうため、この場合は`1`を設定するようにしています。
 因みに`endPage`についてはfor文にて`i <= maxPage`があるため上限を超えることはありません。
 
 ### 次のページ, 最後のページ
